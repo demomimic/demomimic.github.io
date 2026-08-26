@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DemoMimic — One Demonstration, Many Objects</title>
+  <meta name="description" content="DemoMimic: Generalizing dexterous manipulation across objects via local contact geometry, from a single human demonstration." />
+  <meta property="og:title" content="One Demonstration, Many Objects: Generalizing Manipulation via Local Contact Geometry" />
+  <meta property="og:description" content="DemoMimic learns dexterous manipulation from a single human demonstration and transfers across 16 objects, 4 tasks, and 2 robot hands." />
+  <meta property="og:image" content="static/images/teaser_thumb.jpg" />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400..700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="static/css/style.css?v=77" />
+</head>
+<body>
+
+<!-- ===================== NAV ===================== -->
+<nav class="top">
+  <div class="wrap">
+    <div class="brand">De<span>mo</span>Mimic</div>
+    <a class="link" href="#abstract">Abstract</a>
+    <a class="link" href="#results">Results</a>
+    <a class="link" href="#method">Method</a>
+    <a class="link" href="#contact-rewards">Rewards</a>
+  </div>
+</nav>
+
+<!-- ===================== LEFT TABLE OF CONTENTS (wide screens) ===================== -->
+<nav class="toc" id="toc" aria-label="On this page">
+  <div class="toc-hd">Contents</div>
+  <ul class="toc-list">
+    <li><a href="#abstract" data-sec="abstract">Abstract</a></li>
+    <li><a href="#results" data-sec="results">One Policy, Many Objects</a></li>
+    <li><a href="#method" data-sec="method">Method</a></li>
+    <li><a href="#contact-rewards" data-sec="contact-rewards">Contact-Centric Rewards</a></li>
+  </ul>
+</nav>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero">
+  <div class="wrap">
+    <h1 class="title">One Demonstration, Many Objects:<br />Generalizing Manipulation via Local Contact Geometry</h1>
+
+    <div class="authors">
+      <a href="https://satvik1701.github.io/" target="_blank" rel="noopener">Satvik Sharma</a><sup>*</sup>,
+      <a href="https://samratsahoo.com" target="_blank" rel="noopener">Samrat Sahoo</a><sup>*</sup>,
+      <a href="https://qingh097.github.io/" target="_blank" rel="noopener">Huang Huang</a><sup>*</sup>,
+      <a href="https://profiles.stanford.edu/fei-fei-li" target="_blank" rel="noopener">Fei-Fei Li</a>,
+      <a href="https://jiajunwu.com/" target="_blank" rel="noopener">Jiajun Wu</a>,<br />
+      <a href="https://dorsa.fyi/" target="_blank" rel="noopener">Dorsa Sadigh</a>,
+      <a href="https://web.stanford.edu/~bohg/" target="_blank" rel="noopener">Jeannette Bohg</a>
+    </div>
+    <div class="affil">Stanford University</div>
+    <div class="note">* Equal contribution</div>
+
+    <div class="buttons">
+      <a class="btn" href="static/demomimic_paper.pdf" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 2h9l5 5v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zm8 1.5V8h4.5L14 3.5z"/></svg>
+        Paper
+      </a>
+      <a class="btn ghost" href="https://arxiv.org/abs/2609.01938" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 2 7l10 5 10-5-10-5zm0 7.2L4.6 5.5 12 1.8l7.4 3.7L12 9.2zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        arXiv
+      </a>
+      <a class="btn ghost soon" aria-disabled="true">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.9 10.9c.6.1.8-.2.8-.5v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 1.7 2.6 1.2 3.3.9.1-.7.4-1.2.7-1.5-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.6.8.5A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5z"/></svg>
+        Code &middot; coming soon
+      </a>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <figure class="teaser">
+      <video autoplay muted loop playsinline preload="metadata" poster="static/images/teaser_thumb.jpg?v=3" aria-label="DemoMimic teaser: one human demonstration generalizes to many unseen objects">
+        <source src="static/videos/demomimic_teaser.mp4?v=3" type="video/mp4">
+      </video>
+    </figure>
+  </div>
+</header>
+
+<!-- ===================== ABSTRACT ===================== -->
+<section id="abstract">
+  <div class="wrap">
+    <h2 class="sec">Abstract</h2>
+    <div class="prose">
+      <p>Multi-fingered robot hands promise human-level dexterity, but collecting large-scale dexterous manipulation data remains difficult. Human demonstrations offer a scalable alternative to teleoperation, providing strong priors on object interaction and contact strategy. Recent sim-to-real RL methods exploit these priors, yet they typically lack rewards that explicitly incentivize precise contact, which hurts real-world performance. They also generalize poorly to unseen object instances.</p>
+      <p>We propose <b>DemoMimic</b> (<i>Dexterous Motion Mimic</i>), a policy that manipulates objects by focusing on their geometry local to the contact points. Its <b>contact-centric rewards</b> encourage precise contact and improve sim-to-real consistency, yielding a single real-world policy that transfers across objects of varying shape, scale, mass, and friction wherever local contact structure is preserved. In real-world experiments, DemoMimic reaches <b>71% average success across 16 objects, four tasks, and two hand embodiments</b>, with the smallest sim-to-real gap among baselines.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== RESULTS / MULTI-OBJECT GALLERY ===================== -->
+<section id="results">
+  <div class="wrap">
+    <h2 class="sec">One Policy, Many Objects</h2>
+    <p class="sec-sub">A single DemoMimic policy per task generalizes across unseen objects with different material, weight, and size.</p>
+
+    <div class="tabs">
+      <button class="tab active" data-task="openbox">Open the Box</button>
+      <button class="tab" data-task="liftlid">Lift the Lid</button>
+      <button class="tab" data-task="movebottle">Move the Bottle</button>
+    </div>
+
+    <div class="tabpanel">
+    <!-- ---- OPEN THE BOX ---- -->
+    <div class="taskgroup active" data-task="openbox">
+      <div class="task-split">
+        <div class="task-chart" data-task="openbox"></div>
+        <div class="grid">
+        <div class="card"><div class="media"><video autoplay muted loop playsinline preload="none" poster="static/images/icons/wooden_box_icon.png"><source src="static/videos/openbox_wooden.mp4" type="video/mp4"></video></div><div class="label"><img class="ico" src="static/images/icons/wooden_box_icon.png" alt=""> Wooden Box</div></div>
+        <div class="card"><div class="media"><video autoplay muted loop playsinline preload="none" poster="static/images/icons/toolbox_icon.png"><source src="static/videos/openbox_toolbox.mp4" type="video/mp4"></video></div><div class="label"><img class="ico" src="static/images/icons/toolbox_icon.png" alt=""> Toolbox</div></div>
+        <div class="card"><div class="media"><video autoplay muted loop playsinline preload="none" poster="static/images/icons/robot_box_icon.png"><source src="static/videos/openbox_robothand.mp4" type="video/mp4"></video></div><div class="label"><img class="ico" src="static/images/icons/robot_box_icon.png" alt=""> Robot Hand Box</div></div>
+        <div class="card"><div class="media"><video autoplay muted loop playsinline preload="none" poster="static/images/icons/shoebox_icon.png"><source src="static/videos/openbox_shoebox.mp4" type="video/mp4"></video></div><div class="label"><img class="ico" src="static/images/icons/shoebox_icon.png" alt=""> Shoe Box</div></div>
+        </div>
+      </div>
+      <p class="task-note"><b>Note:</b> The Robot Hand Box has a lower success rate because its lid geometry differs from what was seen in simulation.</p>
+    </div>
+
+    <!-- ---- LIFT THE LID ---- -->
+    <div class="taskgroup" data-task="liftlid">
+      <div class="task-split">
+        <div class="task-chart" data-task="liftlid"></div>
+        <div class="grid">
+        <div class="card"><div class="media"><video autoplay muted loop playsinline preload="none" poster="static/images/icons/finemade_waffleiron_icon.png"><source src="static/videos/liftlid_waffleiron1.mp4" type="video/mp4"></video></div><div class="label"><img class="ico" src="static/images/icons/finemade_waffleiron_icon.png" alt=""> Finemade Waffleiron</div></div>
+        <div class="card"><div class="media"><video autoplay muted loop playsinline preload="none" poster="static/images/icons/gourima_waffleiorn_icon.png"><source src="static/videos/liftlid_waffleiron2.mp4" type="video/mp4"></video></div><div class="label"><img class="ico" src="static/images/icons/gourima_waffleiorn_icon.png" alt=""> Gourima Waffleiron</div></div>
+        <div class="card"><div class="media"><video autoplay muted loop playsinline preload="none" poster="static/images/icons/sandwich_maker_icon.png"><source src="static/videos/liftlid_sandwichmaker.mp4" type="video/mp4"></video></div><div class="label"><img class="ico" src="static/images/icons/sandwich_maker_icon.png" alt=""> Breakfast Maker</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ---- MOVE THE BOTTLE ---- -->
+    <div class="taskgroup" data-task="movebottle">
+      <div class="task-split">
+        <div class="task-chart" data-task="movebottle"></div>
+        <div class="grid">
+        <div class="card"><div class="media"><video autoplay muted loop playsinline preload="none" poster="static/images/icons/sunscreen.png"><source src="static/videos/movebottle_sunscreen.mp4" type="video/mp4"></video></div><div class="label"><img class="ico" src="static/images/icons/sunscreen.png" alt=""> Sunscreen</div></div>
+        <div class="card"><div class="media"><video autoplay muted loop playsinline preload="none" poster="static/images/icons/souvenir_cup.png"><source src="static/videos/movebottle_cup.mp4" type="video/mp4"></video></div><div class="label"><img class="ico" src="static/images/icons/souvenir_cup.png" alt=""> Souvenir Cup</div></div>
+        <div class="card"><div class="media"><video autoplay muted loop playsinline preload="none" poster="static/images/icons/canned_drink.png"><source src="static/videos/movebottle_can.mp4" type="video/mp4"></video></div><div class="label"><img class="ico" src="static/images/icons/canned_drink.png" alt=""> Canned Drink</div></div>
+        <div class="card"><div class="media"><video autoplay muted loop playsinline preload="none" poster="static/images/icons/water_bottle.png"><source src="static/videos/movebottle_water.mp4" type="video/mp4"></video></div><div class="label"><img class="ico" src="static/images/icons/water_bottle.png" alt=""> Water Bottle</div></div>
+        <div class="card"><div class="media"><video autoplay muted loop playsinline preload="none" poster="static/images/icons/vitamin_container.png"><source src="static/videos/movebottle_vitamin.mp4" type="video/mp4"></video></div><div class="label"><img class="ico" src="static/images/icons/vitamin_container.png" alt=""> Vitamin Container</div></div>
+        </div>
+      </div>
+    </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== METHOD ===================== -->
+<section id="method" class="alt">
+  <div class="wrap">
+    <h2 class="sec">Method</h2>
+
+    <figure class="method-fig" id="methodFig">
+      <img src="static/images/method_figure.svg" alt="DemoMimic pipeline. Training: a contact-centric RL policy is trained in simulation and distilled into a low-level imitation policy. Inference: the low-level policy acts closed-loop from wrist-camera depth, proprioception, and high-level wrist guidance." />
+    </figure>
+
+    <p class="method-intro"><b>DemoMimic</b> first uses a single human demonstration to train an RL policy, <i>&pi;<sub>RL</sub></i>, in simulation, leveraging extensive domain randomization and a contact-centric reward design for better sim-to-real transfer. We then distill <i>&pi;<sub>RL</sub></i> into a depth-conditioned imitation policy, <i>&pi;<sub>IL</sub></i>, by rolling out the RL policy to generate an offline dataset. At inference time, <i>&pi;<sub>IL</sub></i> is additionally conditioned on a coarse wrist trajectory produced by a separate high-level policy, <i>&pi;<sub>H</sub></i>, which guides the approach phase at the start of the rollout. The robot then completes the task with closed-loop feedback from depth and proprioception.</p>
+  </div>
+</section>
+
+<!-- ===================== CONTACT-CENTRIC REWARDS ===================== -->
+<section id="contact-rewards" class="alt">
+  <div class="wrap">
+    <h2 class="sec">Contact-Centric Rewards</h2>
+
+    <div class="s2r" id="s2rChart"></div>
+
+    <div class="rewards-text">
+      <p>Contact-centric rewards are what make simulated contact transfer better to hardware. The <b>Alignment Reward (AR)</b> aligns each contacting hand link&rsquo;s surface normal with the object&rsquo;s, producing stable, well-conditioned contacts that don&rsquo;t exploit simulator artifacts. The <b>Sustained Contact Reward (SCR)</b> rewards maintaining continuous contact within demonstration windows, growing quadratically with the contact streak. This prevents the intermittent releases that pass in simulation but cause irreversible drops on hardware. Baselines (DexMachina*, HERMES*) and reward ablations perform well in simulation, but their real-world success rates drop sharply. The contact rewards keep real-world performance close to simulation.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a href="#">Back to top ↑</a>
+  </div>
+</footer>
+
+<script src="static/js/chart.js?v=75"></script>
+<script src="static/js/main.js?v=78"></script>
+</body>
+</html>
